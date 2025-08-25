@@ -10,10 +10,10 @@ let gameStats = {
 
 // Configuration - Replace with your actual keys
 const CONFIG = {
-    GEMINI_API_KEY: 'YOUR_GEMINI_API_KEY_HERE', // Replace with your Gemini API key
-    EMAILJS_SERVICE_ID: 'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
-    EMAILJS_TEMPLATE_ID: 'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
-    EMAILJS_PUBLIC_KEY: 'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+    GEMINI_API_KEY: 'AIzaSyDLrZFQU255WTzB1JB60qq7h26scqYqnaI', // Replace with your Gemini API key
+    EMAILJS_SERVICE_ID: 'service_nbgxyyj', // Replace with your EmailJS service ID
+    EMAILJS_TEMPLATE_ID: 'template_hvuu5am', // Replace with your EmailJS template ID
+    EMAILJS_PUBLIC_KEY: 'o0F33ne1IS3GV6AnW' // Replace with your EmailJS public key
 };
 
 // Initialize EmailJS
