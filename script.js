@@ -10,10 +10,10 @@ let gameStats = {
 
 // Configuration - Replace with your actual keys
 const CONFIG = {
-    GEMINI_API_KEY: 'AIzaSyDLrZFQU255WTzB1JB60qq7h26scqYqnaI', // Replace with your Gemini API key
-    EMAILJS_SERVICE_ID: 'service_nbgxyyj', // Replace with your EmailJS service ID
-    EMAILJS_TEMPLATE_ID: 'template_hvuu5am', // Replace with your EmailJS template ID
-    EMAILJS_PUBLIC_KEY: 'o0F33ne1IS3GV6AnW' // Replace with your EmailJS public key
+    GEMINI_API_KEY: 'YOUR_GEMINI_API_KEY_HERE', // Replace with your Gemini API key
+    EMAILJS_SERVICE_ID: 'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+    EMAILJS_TEMPLATE_ID: 'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+    EMAILJS_PUBLIC_KEY: 'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
 };
 
 // Initialize EmailJS
@@ -309,46 +309,68 @@ async function sendEmail() {
         return;
     }
 
+    // Check if EmailJS is configured
+    if (typeof emailjs === 'undefined') {
+        alert('EmailJS not loaded. Please refresh the page and try again.');
+        return;
+    }
+
+    if (CONFIG.EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' || 
+        CONFIG.EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' || 
+        CONFIG.EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+        alert('EmailJS not configured. Please update your API keys in script.js');
+        return;
+    }
+
     const totalGames = gameStats.playerWins + gameStats.aiWins + gameStats.draws;
     const winRate = totalGames > 0 ? ((gameStats.playerWins / totalGames) * 100).toFixed(1) : 0;
 
-    const emailContent = {
+    // Simple template parameters that match EmailJS expectations
+    const templateParams = {
         to_email: email,
-        from_name: 'Tic Tac Toe AI Game',
+        to_name: 'Player',
+        from_name: 'Tic Tac Toe Game',
+        subject: 'Your Tic Tac Toe Game Results',
+        message: `Here are your game results:
+
+Your Wins: ${gameStats.playerWins}
+AI Wins: ${gameStats.aiWins}
+Draws: ${gameStats.draws}
+Total Games: ${totalGames}
+Win Rate: ${winRate}%
+
+Thanks for playing!`,
         player_wins: gameStats.playerWins,
         ai_wins: gameStats.aiWins,
         draws: gameStats.draws,
         total_games: totalGames,
-        win_rate: winRate,
-        message: `Here are your Tic Tac Toe game results:
-
-🎮 Game Statistics:
-• Your Wins: ${gameStats.playerWins}
-• AI Wins: ${gameStats.aiWins}
-• Draws: ${gameStats.draws}
-• Total Games: ${totalGames}
-• Your Win Rate: ${winRate}%
-
-Thanks for playing Tic Tac Toe vs AI! 🤖
-
-Challenge yourself to beat the AI more often!`
+        win_rate: winRate
     };
 
     try {
-        if (typeof emailjs !== 'undefined' && CONFIG.EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID') {
-            await emailjs.send(
-                CONFIG.EMAILJS_SERVICE_ID,
-                CONFIG.EMAILJS_TEMPLATE_ID,
-                emailContent
-            );
-            alert('Results sent to your email successfully! 📧');
-        } else {
-            // Fallback: show results in alert if EmailJS not configured
-            alert(`Game Results:\n\nYour Wins: ${gameStats.playerWins}\nAI Wins: ${gameStats.aiWins}\nDraws: ${gameStats.draws}\nTotal Games: ${totalGames}\nWin Rate: ${winRate}%\n\nTo enable email functionality, please configure EmailJS.`);
-        }
+        console.log('Sending email with params:', templateParams);
+        
+        const response = await emailjs.send(
+            CONFIG.EMAILJS_SERVICE_ID,
+            CONFIG.EMAILJS_TEMPLATE_ID,
+            templateParams,
+            CONFIG.EMAILJS_PUBLIC_KEY
+        );
+        
+        console.log('Email sent successfully:', response);
+        alert('Results sent to your email successfully! 📧');
+        
     } catch (error) {
-        console.error('Email error:', error);
-        alert('Failed to send email. Please try again or check your configuration.');
+        console.error('Email error details:', error);
+        
+        // More specific error handling
+        if (error.status === 422) {
+            alert('Configuration error: Please check your EmailJS template and service settings.');
+        } else if (error.status === 400) {
+            alert('Bad request: Please check your EmailJS configuration.');
+        } else {
+            alert(`Failed to send email (Error ${error.status}): ${error.text || 'Unknown error'}`);
+        }
     }
 }
 
