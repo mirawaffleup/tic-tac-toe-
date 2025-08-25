@@ -3,42 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe AI</title>
+    <title>Tic Tac Toe vs AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Tic Tac Toe</h1>
-    <div id="game-board" class="board">
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-    </div>
-    <div id="winning-message" class="winning-message">
-        <div data-winning-message-text></div>
-        <button id="restartButton">Restart</button>
-    </div>
-    <div id="email-form" style="display: none; margin-top: 20px; text-align: center;">
-        <h2>Send Result to Email (Optional)</h2>
-        <input type="email" id="email-input" placeholder="Enter your email" style="padding: 10px; font-size: 1rem; margin-bottom: 10px;">
-        <button id="send-email-button" style="padding: 10px 20px;">Send</button>
-        <p id="email-status"></p>
+    <div class="container">
+        <h1>🎮 Tic Tac Toe vs AI</h1>
+        
+        <div class="status" id="status">Click "New Game" to start!</div>
+        
+        <div class="game-board" id="gameBoard">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+
+        <div class="controls">
+            <button onclick="startNewGame()">New Game</button>
+            <button onclick="resetStats()">Reset Stats</button>
+        </div>
+
+        <div class="game-history" id="gameHistory">
+            Wins: <span id="playerWins">0</span> | 
+            AI Wins: <span id="aiWins">0</span> | 
+            Draws: <span id="draws">0</span>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>AI is thinking...</p>
+        </div>
+
+        <div class="email-section" id="emailSection">
+            <h3>📧 Send Results to Email</h3>
+            <input type="email" id="emailInput" placeholder="Enter your email address">
+            <br>
+            <button onclick="sendEmail()">Send Results</button>
+        </div>
     </div>
 
-    <!-- Supabase Client Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script>
-      // This will be filled in later
-      const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-      const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-      const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
